@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import { useWebSocket } from '../websocketContext/websocketContext';
 import React, {useState, useEffect } from 'react';
+import './playerGame.css';
 
 function PlayerGame() {
 
@@ -70,7 +71,7 @@ function PlayerGame() {
         console.log("data: " + data);
         console.log("token: " + token);
         console.log("players: " + players);
-        console.log("name: " + name);
+        console.log("name bbb: " + name);
         console.log("actual: " + userName)
 
     
@@ -80,13 +81,15 @@ function PlayerGame() {
     return (
         
         <div className='mainDiv'>
-            <div>
-                <h1>Trivia</h1>
-                <h3>{userName}</h3>
-                <h3>{score}</h3>
+            <div id='statsDiv'>
+                <h1>FACT FRENZY</h1>
+                <div id='stats'>
+                    <h3 >{userName}</h3>
+                    <h3>{score}</h3>
+                </div>
             </div>
             <div>
-                <button onClick={buzzer}>BUZZER</button>
+                <button onClick={buzzer} id='buzzerButton'>BUZZER</button>
             </div>
         </div>
 

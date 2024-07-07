@@ -1,10 +1,14 @@
 package main.new_server.classes;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 
 public class ResponseObject {
     private String data;
     private String token;
+
+    @JsonProperty("name")
     private String name;
     private ArrayList<String> players;
 

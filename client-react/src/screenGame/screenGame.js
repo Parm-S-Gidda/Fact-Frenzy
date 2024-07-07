@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import { useWebSocket } from '../websocketContext/websocketContext';
 import React, {useState, useEffect } from 'react';
+import './screenGame.css';
 
 function ScreenGame(){
 
@@ -12,7 +13,7 @@ function ScreenGame(){
     const {state} = location;
     const {lobbyKey, userName, userType} = state || {};
     const navigate = useNavigate();
-    const [message, setMessages] = useState("");
+    const [message, setMessages] = useState("Host start the game");
 
     useEffect(() => {
         if (stompClient && lobbyKey) {
@@ -27,9 +28,7 @@ function ScreenGame(){
     
         
             console.log("Requesting Question");
-           // stompClient.send('/app/' + lobbyKey, {}, JSON.stringify(payload));
-            
-
+      
             return () => {
                 subscription.unsubscribe();
             };
@@ -51,9 +50,12 @@ function ScreenGame(){
     };
 
     return(
-        <div>
-            <h1>Trivia</h1>
-            <h1>{message}</h1>
+        <div id='screenMainDiv'>
+            <h1>FACT FRENZY</h1>
+
+            <div id='screenQuestionDiv'>
+                <h1 id='screenMessage'>{message}</h1>
+            </div>
         </div>
     )
 }

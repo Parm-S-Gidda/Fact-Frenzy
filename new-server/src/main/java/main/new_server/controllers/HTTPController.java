@@ -134,6 +134,7 @@ public class HTTPController {
 
             allRooms.get(Integer.parseInt(gameKey)).setTime(System.currentTimeMillis());
             allRooms.get(Integer.parseInt(gameKey)).setSomeoneBuzzed(false);
+            allRooms.get(Integer.parseInt(gameKey)).setCanBuzz(true);
             return responseObject;
         }
 
@@ -157,6 +158,7 @@ public class HTTPController {
 
         if(Objects.equals(token, "getAnswer")){
 
+            allRooms.get(Integer.parseInt(gameKey)).setSomeoneBuzzed(true);
             String temp = allRooms.get(Integer.parseInt(gameKey)).retrieveAnswer();
             temp = temp.replace("&#039;", "'");
             responseObject.setData(temp);

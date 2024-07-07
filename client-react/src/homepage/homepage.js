@@ -68,12 +68,12 @@ function HomePage()
 
 
     return (
-    <div>
+    <div className='main'>
         <div className="title">
-            <h1>Trivia</h1>
+            <h1>FACT FRENZY</h1>
         </div>  
     
-        <div>
+        <div className='second'>
             <div id="createGame">
             
                 <button id="hostGameButton" onClick={handleHostClicked}>Host Game</button>
@@ -82,13 +82,11 @@ function HomePage()
             <div id="joinGame">
 
                 <div className='joinDiv'>
+
+                <button id="joinGameButton" onClick={handleJoinClicked}>Join Game</button>
                     <form>
                         <input type="text" id="gameKey" name="gameKey" placeholder="Lobby Code"></input>
                     </form>
-
-                 
-                    <button id="joinGameButton" onClick={handleJoinClicked}>Join Game</button>
-                   
 
                 </div>
             

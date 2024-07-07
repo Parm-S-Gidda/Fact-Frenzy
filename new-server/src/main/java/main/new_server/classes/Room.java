@@ -16,13 +16,15 @@ public class Room {
     private long QuestionSentTime = 0;
     private boolean someoneBuzzed = false;
     private String BuzzUser = "";
-    private HashMap<String, Integer> playerScores = new HashMap<String, Integer>();
+    private HashMap<String, Integer> playerScores;
+    private boolean allowedBuzz = false;
 
 
 
     public Room(int roomId){
         this.roomId = roomId;
         this.players = new ArrayList<>();
+        this.playerScores = new HashMap<String, Integer>();
 
         TriviaService triviaService = new TriviaService();
         TriviaResponse triviaResponse = triviaService.getTriviaQuestions();
@@ -116,7 +118,7 @@ public class Room {
 
         if(buzzTime > QuestionSentTime & buzzTime < QuestionSentTime + 5000){
 
-            if(!someoneBuzzed){
+            if(!someoneBuzzed && allowedBuzz){
                 someoneBuzzed = true;
                 BuzzUser = playerName;
                 return true;
@@ -146,6 +148,11 @@ public class Room {
         }
 
         return playerScores.get(playerName).toString();
+
+    }
+
+    public void setCanBuzz(boolean canBuzz){
+        allowedBuzz = canBuzz;
 
     }
 

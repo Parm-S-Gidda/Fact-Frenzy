@@ -119,7 +119,7 @@ function Lobby()
     return (
         <div class='mainDiv'> 
             <div id='titleInfo'>
-                <h1>Trivia</h1>
+                <h1>FACT FRENZY</h1>
                 <h3>Lobby Code: {lobbyKey}</h3>
                 <h3>{userName}</h3>
                 
@@ -136,9 +136,9 @@ function Lobby()
             </ul>
             </div>
             <div id='buttons'> 
-                <button onClick={leaveLobby}>Leave Lobby</button>
+                <button onClick={leaveLobby} id='leaveButton'>Leave Lobby</button>
 
-                {userType === "hoster" && (  <button onClick={startGame} >Start Game</button>)}
+                {userType === "hoster" && (  <button onClick={startGame} id='startButton' >Start Game</button>)}
               
             </div>
 

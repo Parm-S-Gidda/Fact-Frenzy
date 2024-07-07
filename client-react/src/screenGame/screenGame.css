@@ -1,0 +1,15 @@
+#screenMainDiv {
+    display: flex;
+  
+    align-items: center;
+    flex-direction: column;
+}
+
+#screenQuestionDiv{
+    background-color: #457b9d;
+    border-radius: 7px;
+    width: 95%;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+}

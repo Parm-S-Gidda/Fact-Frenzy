@@ -33,13 +33,16 @@ function NameSelection()
 
     return (
 
-        <div class='mainDiv'>
+        <div class='userNameMain'>
             <div id='titleDiv'>
-                <h1>Trivia</h1>
-                <h3>Choose a Username</h3>
-                <form>
-                        <input type="text" id="username" name="username" placeholder="Enter a Username"></input>
-                </form>
+                <h1>FACT FRENZY</h1>
+
+                <div id='userNameTypeDiv'>
+                    <h3>Choose a Username</h3>
+                    <form>
+                            <input type="text" id="username" name="username" placeholder="Enter a Username"></input>
+                    </form>
+                </div>
             </div>
 
             <div id='buttonDiv' className='userNameButtonDiv'>

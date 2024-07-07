@@ -7,3 +7,53 @@
     display: flex;
     justify-content: center;
 }
+
+#userNameBackButton{
+
+    background-color: #e63946;
+    border-color: red;
+    border-width: 3px;
+    border-radius: 7px;
+    width: 150px;
+    height: 40px;
+    color: black;
+    font-weight: 800;
+
+}
+
+#saveNameBackButton{
+
+    background-color: #e63946;
+    border-color: red;
+    border-width: 3px;
+    border-radius: 7px;
+    width: 150px;
+    height: 40px;
+    color: black;
+    font-weight: 800;
+
+}
+
+#buttonDiv {
+
+    padding-top: 10px;
+}
+
+#userNameTypeDiv {
+
+    background-color: #457b9d;
+    width: 22%;
+    margin: 1px auto;
+    padding: 10px;
+    border-radius: 7px;
+}
+
+#username {
+
+    background-color: #f1faee;
+    border-radius: 7px;
+    width: 95%;
+    border-radius: 5px;
+    height: 25px;
+    border-color: black;
+}

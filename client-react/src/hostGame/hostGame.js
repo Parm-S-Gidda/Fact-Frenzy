@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import { useWebSocket } from '../websocketContext/websocketContext';
 import React, {useState, useEffect } from 'react';
+import './hostGame.css';
 
 function HostGame(){
 
@@ -17,8 +18,11 @@ function HostGame(){
     const [answer, setAnswer] = useState("");
     const [buzzName, setBuzzName] = useState("");
 
+    var canBuzz = false;
+
     const showNextQuestion = () =>
     {
+        canBuzz = true;
        let payload = {
             token: "getQuestion",
             gameKey: lobbyKey,
@@ -31,19 +35,20 @@ function HostGame(){
     const skipQuestion = () =>
     {
 
+        canBuzz = false;
         let payload = {
             token: "getAnswer",
             gameKey: lobbyKey,
             userName: "user"};
 
         stompClient.send('/app/' + lobbyKey + "/GameHost", {}, JSON.stringify(payload));
-
-  
-        setRoundState(2);
+        console.log("we tried skipping");
+        setRoundState(3);
     }
 
     const correctAnswer = () =>
     {
+        canBuzz = false;
         let payload = {
             token: "correct",
             gameKey: lobbyKey,
@@ -54,8 +59,16 @@ function HostGame(){
         setRoundState(0);
     }
 
+    const Continue = () =>
+        {
+          
+            canBuzz = false;
+            setRoundState(0);
+        }
+
     const IncorrectAnswer = () =>
     {
+        canBuzz = false;
         let payload = {
             token: "wrong",
             gameKey: lobbyKey,
@@ -127,29 +140,49 @@ function HostGame(){
 
     return(
 
-        <div>
-              <h1>Trivia</h1>
+        <div id='hostGameDiv'>
+              <h1>FACT FRENZY</h1>
 
               <div>
                 {roundState === 0 ? (
-                    <div>
-                        <h3>Display the next Question</h3>
-                        <button onClick={showNextQuestion}>Show Next Question</button>
+                    <div id='nextQuestionDiv'>
+
+                        <div id='backGroundDiv'>
+                            <h3>Display the next Question</h3>
+                        </div>
+                        <button onClick={showNextQuestion} id='showNextButton'>Show Next Question</button>
                     </div>
                 ) : roundState === 1 ? (
-                    <div>
-                        <h3>{question}</h3>
-                        <h3>Skip Question</h3>
-                        <button onClick={skipQuestion}>Skip Question</button>
+                    <div id='skipQuestionDiv'>
+
+                        <div id='backGroundDiv'>
+                            <h3>{question}</h3>
+                        </div>
+                        <button onClick={skipQuestion} id='skipQuestionButton'>Skip Question</button>
                     </div>
                 ) : roundState === 2 ? (
-                    <div>
-                        <h3>Did {buzzName} answer correctly?</h3>
-                        <h3>Answer: {answer}</h3>
-                        <button onClick={correctAnswer}>Correct</button>
-                        <button onClick={IncorrectAnswer}>Incorrect</button>
+                    <div id='rightOrWrongDiv'>
+                        
+                        <div id='backGroundDiv'>
+                            <h3>Did {buzzName} answer correctly?</h3>
+                            <h3>Answer: {answer}</h3>
+                        </div>
+
+                        <button onClick={correctAnswer} id='correctButton'>Correct</button>
+                        <button onClick={IncorrectAnswer} id='wrongButton'>Incorrect</button>
                     </div>
-                ) : (
+                )  : roundState === 3 ? (
+                    <div id='questionSkippedDiv'>
+
+                        <div id='backGroundDiv'>
+                            <h3>Question Skipped</h3>
+                            <h3>Correct Answer was: {answer}</h3>
+                        </div>
+                        <button onClick={Continue} id='continueButton'>Continue</button>
+                   
+                    </div>
+                )
+                 : (
                     <h1>Number is neither zero, one, nor two</h1>
                 )}
             </div>
