@@ -17,6 +17,7 @@ function HostGame(){
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
     const [buzzName, setBuzzName] = useState("");
+    const [playerPoints, setPlayerPoints] = useState([]);
 
     var canBuzz = false;
 
@@ -42,7 +43,6 @@ function HostGame(){
             userName: "user"};
 
         stompClient.send('/app/' + lobbyKey + "/GameHost", {}, JSON.stringify(payload));
-        console.log("we tried skipping");
         setRoundState(3);
     }
 
@@ -56,13 +56,21 @@ function HostGame(){
 
         stompClient.send('/app/' + lobbyKey + "/correct", {}, JSON.stringify(payload));
 
+   
+
         setRoundState(0);
     }
 
     const Continue = () =>
         {
           
+            let payload = {
+                token: "getPoints",
+                gameKey: lobbyKey,
+                userName: buzzName};
+
             canBuzz = false;
+            stompClient.send('/app/' + lobbyKey + "/points", {}, JSON.stringify(payload));
             setRoundState(0);
         }
 
@@ -76,6 +84,8 @@ function HostGame(){
 
         stompClient.send('/app/' + lobbyKey + "/wrong", {}, JSON.stringify(payload));
 
+
+
         setRoundState(0);
     }
 
@@ -84,23 +94,23 @@ function HostGame(){
             let subscription = stompClient.subscribe("/room/" + lobbyKey + "/GameHost", handleNewMessage);
             let subscription2 = stompClient.subscribe("/room/" + lobbyKey + "/Screen", handleNewMessage);
             let subscription3 = stompClient.subscribe("/room/" + lobbyKey + "/buzz", handleNewMessage);
+            let subscription4 = stompClient.subscribe("/room/" + lobbyKey + "/points", handleNewMessage);
 
             
-            let payload = {
-                token: "getAnswer",
+            let payload2 = {
+                token: "getPoints",
                 gameKey: lobbyKey,
-                userName: "user"};
-            
+                userName: buzzName};
     
-        
-            console.log("Requesting Answer");
-           // stompClient.send('/app/' + lobbyKey, {}, JSON.stringify(payload));
+            
+            stompClient.send('/app/' + lobbyKey + "/points", {}, JSON.stringify(payload2));
             
 
             return () => {
                 subscription.unsubscribe();
                 subscription2.unsubscribe();
                 subscription3.unsubscribe();
+                subscription4.unsubscribe();
             };
         }
     }, [stompClient, lobbyKey]);
@@ -132,6 +142,14 @@ function HostGame(){
         stompClient.send('/app/' + lobbyKey + "/GameHost", {}, JSON.stringify(payload));
            setRoundState(2);
        }
+       else if(token === "score"){
+        console.log("got points");
+        setPlayerPoints(players);
+       }
+       else if(token === "done"){
+        navigate('/game-over', {state:{lobbyKey:lobbyKey, userType:'player'}});
+
+       }
 
     };
 
@@ -151,6 +169,18 @@ function HostGame(){
                             <h3>Display the next Question</h3>
                         </div>
                         <button onClick={showNextQuestion} id='showNextButton'>Show Next Question</button>
+
+                        <div id='pointsList'>
+                            <ol>
+                                {playerPoints.length > 0 ? (
+                                    playerPoints.map((msg, index) => (
+                                        <li key={index}>{msg}</li>
+                                    ))
+                                ) : (
+                                    <li> </li>
+                                )}
+                            </ol>
+                        </div>
                     </div>
                 ) : roundState === 1 ? (
                     <div id='skipQuestionDiv'>

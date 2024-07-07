@@ -99,3 +99,15 @@
     margin-right: 2px;
 
 }
+
+#pointsList{
+    display: flex;
+    justify-content: center;
+    background-color: #457b9d;
+    width: fit-content;
+    margin: 10px auto;
+    
+    border-radius: 7px;
+    font-weight: 500;
+    padding-right: 10px;
+}

@@ -36,7 +36,7 @@ function PlayerGame() {
     useEffect(() => {
         if (stompClient && lobbyKey) {
             let subscription = stompClient.subscribe("/room/" + lobbyKey + "/points", handleNewMessage);
-           // let subscription2 = stompClient.subscribe("/room/" + lobbyKey + "/Screen", handleNewMessage);
+           let subscription2 = stompClient.subscribe("/room/" + lobbyKey + "/Screen", handleNewMessage);
 
             
             let payload = {
@@ -46,13 +46,12 @@ function PlayerGame() {
             
     
         
-            console.log("Requesting Answer");
-           // stompClient.send('/app/' + lobbyKey, {}, JSON.stringify(payload));
+      
             
 
             return () => {
                 subscription.unsubscribe();
-               // subscription2.unsubscribe();
+               subscription2.unsubscribe();
             };
         }
     }, [stompClient, lobbyKey]);
@@ -65,6 +64,9 @@ function PlayerGame() {
 
         if(token === "score" && name === userName){
             setScore(data)
+        }
+        else if(token === "done"){
+            navigate('/game-over', {state:{lobbyKey:lobbyKey, userType:'player'}});
         }
 
       

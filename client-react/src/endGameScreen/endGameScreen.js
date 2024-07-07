@@ -3,41 +3,40 @@ import {useLocation} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import { useWebSocket } from '../websocketContext/websocketContext';
 import React, {useState, useEffect } from 'react';
-import './screenGame.css';
+import './endGameScreen.css';
 
-function ScreenGame(){
+function EndGameScreen(){
 
     const [roundState, setRoundState] = useState(0);
     const { stompClient, sendMessage, subscribe } = useWebSocket();
     const location = useLocation();
     const {state} = location;
-    const {lobbyKey, userName, userType} = state || {};
+    const {lobbyKey, userType} = state || {};
     const navigate = useNavigate();
     const [message, setMessages] = useState("Host start the game");
     const [playerPoints, setPlayerPoints] = useState([]);
 
     useEffect(() => {
         if (stompClient && lobbyKey) {
-            let subscription = stompClient.subscribe("/room/" + lobbyKey + "/Screen", handleNewMessage);
             let subscription2 = stompClient.subscribe("/room/" + lobbyKey + "/points", handleNewMessage);
             
             let payload = {
-                token: "getQuestion",
+                token: "getPoints",
                 gameKey: lobbyKey,
                 userName: "user"};
             
     
-        
-            console.log("Requesting Question");
+            stompClient.send('/app/' + lobbyKey + "/points", {}, JSON.stringify(payload));
+            
       
             return () => {
-                subscription.unsubscribe();
+                
                 subscription2.unsubscribe();
             };
         }
     }, [stompClient, lobbyKey]);
 
-    const handleNewMessage = (message) => {
+        const handleNewMessage = (message) => {
         console.log('New message received:', message.body); 
         const parsedMessages = JSON.parse(message.body);
 
@@ -48,42 +47,59 @@ function ScreenGame(){
         console.log("token: " + token);
         console.log("players: " + players);
 
-        if(token === "question"){
-            setMessages(data);
-        }
-        else if(token === "score"){
+       if(token === "score"){
             setPlayerPoints(players);
         }
-        else if(token === "done"){
-            navigate('/game-over', {state:{lobbyKey:lobbyKey, userType:'screen'}});
-        }
+       
       
 
  
 
     };
 
-    return(
-        <div id='screenMainDiv'>
-            <h1>FACT FRENZY</h1>
+    const leaveGame = () =>{
 
-            <div id='screenQuestionDiv'>
-                <h1 id='screenMessage'>{message}</h1>
+        if(userType === 'screen'){
+
+            let payload = {
+                token: "endGame",
+                gameKey: lobbyKey,
+                userName: "user"};
+            
+    
+            stompClient.send('/app/' + lobbyKey + "/endGame", {}, JSON.stringify(payload));
+            navigate('/');
+
+        }
+    }
+
+    
+
+    return (
+        <div id='endGameMainDiv'>
+            <h1>FACT FRENZY</h1>
+            
+
+            <div id='scoresDiv'>
+                <h2 id="finalScores">Final Scores</h2>
+            </div>
+            <div id='pointsList'>
+
+                <ol id='screenList'>
+                    {playerPoints.length > 0 ? (
+                        playerPoints.map((msg, index) => (
+                            <li key={index}>{msg}</li>
+                        ))
+                    ) : (
+                        <li> </li>
+                    )}
+                </ol>
             </div>
 
-            <div id='pointsList'>
-                            <ol id='screenList'>
-                                {playerPoints.length > 0 ? (
-                                    playerPoints.map((msg, index) => (
-                                        <li key={index}>{msg}</li>
-                                    ))
-                                ) : (
-                                    <li> </li>
-                                )}
-                            </ol>
-                        </div>
+            <button id='leaveGameButton' onClick={leaveGame}>Leave Game</button>
         </div>
-    )
+    );
+
 }
 
-export default ScreenGame;
+export default EndGameScreen;

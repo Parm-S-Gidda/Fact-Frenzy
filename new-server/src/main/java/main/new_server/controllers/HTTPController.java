@@ -127,10 +127,21 @@ public class HTTPController {
             String temp = allRooms.get(Integer.parseInt(gameKey)).retrieveQuestion();
             temp = temp.replace("&#039;", "'");
             temp = temp.replace("&quot;", "\"");
-            responseObject.setData(temp);
+
+            if(temp == "done"){
+
+                responseObject.setToken("done");
 
 
-           responseObject.setToken("question");
+            }
+            else{
+                responseObject.setData(temp);
+                responseObject.setToken("question");
+            }
+
+
+
+
 
             allRooms.get(Integer.parseInt(gameKey)).setTime(System.currentTimeMillis());
             allRooms.get(Integer.parseInt(gameKey)).setSomeoneBuzzed(false);
@@ -223,6 +234,7 @@ public class HTTPController {
 
             responseObject.setData(allRooms.get(Integer.parseInt(gameKey)).increaseScore(username));
                 responseObject.setToken("score");
+                responseObject.setPlayers(allRooms.get(Integer.parseInt(gameKey)).getPlayerPoints());
                 responseObject.setUserName(username);
                 return responseObject;
 
@@ -253,13 +265,55 @@ public class HTTPController {
 
             responseObject.setData(allRooms.get(Integer.parseInt(gameKey)).decreaseScore(username));
             responseObject.setToken("score");
+            responseObject.setPlayers(allRooms.get(Integer.parseInt(gameKey)).getPlayerPoints());
             responseObject.setUserName(username);
             return responseObject;
+
         }
 
         return null;
 
     }
+
+    @MessageMapping("/{roomId}/points")
+    @SendTo("/room/{roomId}/points")
+    public ResponseObject getPoints(@RequestBody roomSubscription jsonData) {
+
+        String gameKey = jsonData.getGameKey();
+        String username = jsonData.getUserName();
+        String token = jsonData.getToken();
+        long time = jsonData.getTime();
+
+
+
+        System.out.println(time);
+
+        ResponseObject responseObject = new ResponseObject();
+
+        System.out.println("requesting points");
+
+         if (Objects.equals(token, "getPoints")) {
+
+            responseObject.setPlayers(allRooms.get(Integer.parseInt(gameKey)).getPlayerPoints());
+            responseObject.setToken("score");
+            return responseObject;
+
+        }
+
+        return null;
+
+    }
+
+    @MessageMapping("/{roomId}/endGame")
+    public void endGame(@RequestBody roomSubscription jsonData) {
+
+        String gameKey = jsonData.getGameKey();
+        allRooms.remove(Integer.parseInt(gameKey));
+        roomKeys.remove(Integer.parseInt(gameKey));
+        
+    }
+
+
 
 }
 

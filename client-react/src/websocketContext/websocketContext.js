@@ -10,7 +10,7 @@ export const WebSocketProvider = ({ children }) => {
 
   useEffect(() => {
 
-    console.log("a;lkjfs;kjf;kasjf;klsjdf;kadjs;fkjds;kj;f");
+ 
     const newSocket = new SockJS(url, null, {
       transports: ['websocket', 'xhr-streaming', 'xhr-polling'],
       withCredentials: true

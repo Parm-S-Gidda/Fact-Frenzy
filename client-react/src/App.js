@@ -6,6 +6,7 @@ import PlayerGame from './playerGame/playerGame';
 import HostGame from './hostGame/hostGame';
 import ScreenGame from './screenGame/screenGame';
 import NameSelection from './name-selection/nameSelection';
+import EndGameScreen from './endGameScreen/endGameScreen';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import {WebSocketProvider} from './websocketContext/websocketContext';
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/playerGame" element={<PlayerGame />} />
           <Route path="/hostGame" element={<HostGame />} />
           <Route path="/screenGame" element={<ScreenGame />} />
+          <Route path="/game-over" element={<EndGameScreen />} />
         </Routes>
       </Router>
     </WebSocketProvider>

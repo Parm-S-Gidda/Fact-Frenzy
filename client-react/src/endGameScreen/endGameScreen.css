@@ -1,0 +1,27 @@
+#leaveGameButton {
+    background-color: #e63946;
+    border-color: red;
+    border-width: 3px;
+    border-radius: 7px;
+    width: 150px;
+    height: 40px;
+    color: black;
+    font-weight: 800;
+}
+
+#endGameMainDiv{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#finalScores {
+    color: #403d39;
+}
+
+#scoresDiv {
+    background-color: #ccc5b9;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 7px;
+}

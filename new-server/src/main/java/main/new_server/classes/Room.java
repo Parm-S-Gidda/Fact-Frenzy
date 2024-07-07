@@ -4,6 +4,8 @@ import main.new_server.services.TriviaService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Room {
 
@@ -15,6 +17,7 @@ public class Room {
     private int currentAnswer = 0;
     private long QuestionSentTime = 0;
     private boolean someoneBuzzed = false;
+    private String host = "";
     private String BuzzUser = "";
     private HashMap<String, Integer> playerScores;
     private boolean allowedBuzz = false;
@@ -44,6 +47,7 @@ public class Room {
         if(players.size() == 0){
             playerScores.put(newPlayerName, 0);
             players.add(newPlayerName + " (Host)");
+            host = newPlayerName;
             return true;
         }
         else{
@@ -93,7 +97,7 @@ public class Room {
             return questions.get(currentQuestion-1);
         }
 
-        return null;
+        return "done";
 
     }
 
@@ -154,6 +158,30 @@ public class Room {
     public void setCanBuzz(boolean canBuzz){
         allowedBuzz = canBuzz;
 
+    }
+
+    public ArrayList<String> getPlayerPoints(){
+
+
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(playerScores.entrySet());
+
+
+        entryList.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+
+        ArrayList<String> sortedScores = new ArrayList<>();
+
+
+        for (Map.Entry<String, Integer> entry : entryList) {
+
+            if(entry.getKey() != host) {
+                String combinedString = entry.getKey() + ": " + entry.getValue();
+                sortedScores.add(combinedString);
+            }
+        }
+
+        // Return the ArrayList
+        return sortedScores;
     }
 
 
