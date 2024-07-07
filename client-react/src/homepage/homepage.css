@@ -1,0 +1,16 @@
+.joinDiv {
+
+    display: flex;
+    justify-content: center;
+}
+
+#createGame {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+}
+

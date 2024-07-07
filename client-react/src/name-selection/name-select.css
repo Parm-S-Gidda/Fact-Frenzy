@@ -1,0 +1,9 @@
+#titleDiv {
+ 
+    text-align: center;
+}
+
+#buttonDiv {
+    display: flex;
+    justify-content: center;
+}
