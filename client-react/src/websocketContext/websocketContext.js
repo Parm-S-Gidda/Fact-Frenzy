@@ -6,7 +6,7 @@ const WebSocketContext = createContext();
 
 export const WebSocketProvider = ({ children }) => {
   const [stompClient, setStompClient] = useState(null);
-  const url = 'http://localhost:8080/connect'; // Replace with your server address
+  const url = 'https://fact-frenzy-01-8036074015.us-central1.run.app/connect'; // 
 
   useEffect(() => {
 

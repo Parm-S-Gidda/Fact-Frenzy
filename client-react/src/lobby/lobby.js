@@ -3,7 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {useNavigate } from 'react-router-dom';
 import './lobbyStyle.css';
 import { useWebSocket } from '../websocketContext/websocketContext';
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 
 function Lobby() 
 {
@@ -14,11 +14,14 @@ function Lobby()
     const {lobbyKey, userName, userType} = state || {};
     const navigate = useNavigate();
     const [messages, setMessages] = useState([]);
+    const leavingClickedRef = useRef(false);
     let isHost = false;
+
 
     useEffect(() => {
         if (stompClient && lobbyKey) {
             let subscription = stompClient.subscribe("/room/" + lobbyKey, handleNewMessage);
+            let subscription2 = stompClient.subscribe("/room/" + lobbyKey + "/end", handleNewMessage);
 
             let payload = "";
             if(userType == "hoster"){
@@ -41,7 +44,15 @@ function Lobby()
             
 
             return () => {
-                subscription.unsubscribe();
+
+                if(leavingClickedRef.current){
+                    
+                    subscription.unsubscribe();
+                     subscription2.unsubscribe();
+                    leaveLobby();
+                }
+
+
             };
         }
     }, [stompClient, lobbyKey]);
@@ -70,6 +81,16 @@ function Lobby()
             }
        
         }
+        else if(token === "host" && data != userName){
+            isHost = false;
+        }
+        else if(token === "endGame"){
+            
+            if(data === "hoster"){
+                navigate('/'); 
+            }
+
+        }
 
         console.log("data: " + data);
         console.log("token: " + token);
@@ -91,6 +112,7 @@ function Lobby()
     const leaveLobby = () => {
 
         console.log("leaving----------");
+       
 
         let payload = "";
         if(userType === "hoster"){
@@ -99,6 +121,7 @@ function Lobby()
                 gameKey: lobbyKey,
                 userName: "hoster"
             }
+            leavingClickedRef.current = true;
         }
         else{
                  payload = {
@@ -110,6 +133,7 @@ function Lobby()
 
         console.log("sending leave");
         stompClient.send('/app/' + lobbyKey, {}, JSON.stringify(payload));
+        stompClient.send('/app/' + lobbyKey + "/leaveGame", {}, JSON.stringify(payload));
         navigate('/');
     }
 

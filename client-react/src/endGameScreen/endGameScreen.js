@@ -68,9 +68,11 @@ function EndGameScreen(){
             
     
             stompClient.send('/app/' + lobbyKey + "/endGame", {}, JSON.stringify(payload));
-            navigate('/');
+            
 
         }
+
+        navigate('/');
     }
 
     

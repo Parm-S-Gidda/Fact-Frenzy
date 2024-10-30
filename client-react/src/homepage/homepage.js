@@ -9,7 +9,7 @@ function HomePage()
     const navigate = useNavigate();
     const handleHostClicked = () => 
     {
-        fetch('http://localhost:8080/createRoom')
+        fetch('https://fact-frenzy-01-8036074015.us-central1.run.app/createRoom')
         .then(response => 
         {
             if(!response.ok)
@@ -35,7 +35,7 @@ function HomePage()
         const gameKeyInput = document.getElementById('gameKey'); 
         let gameKey = gameKeyInput.value;
 
-        fetch(`http://localhost:8080/checkKey?key=${gameKey}`)
+        fetch(`https://fact-frenzy-01-8036074015.us-central1.run.app/checkKey?key=${gameKey}`)
             .then(response => 
             {
                 if (!response.ok) 

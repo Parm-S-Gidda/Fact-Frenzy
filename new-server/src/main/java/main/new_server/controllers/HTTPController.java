@@ -310,7 +310,46 @@ public class HTTPController {
         String gameKey = jsonData.getGameKey();
         allRooms.remove(Integer.parseInt(gameKey));
         roomKeys.remove(Integer.parseInt(gameKey));
-        
+
+    }
+
+    @MessageMapping("/{roomId}/leaveGame")
+    @SendTo("/room/{roomId}/end")
+    public ResponseObject leaveGame(@RequestBody roomSubscription jsonData) {
+
+        String gameKey = jsonData.getGameKey();
+        String username = jsonData.getUserName();
+
+
+        ResponseObject responseObject = new ResponseObject();
+
+        System.out.println("Here");
+
+       if(username == "hoster"){
+
+           System.out.println("bbb");
+
+           allRooms.remove(Integer.parseInt(gameKey));
+           roomKeys.remove(Integer.parseInt(gameKey));
+
+           responseObject.setToken("endGame");
+           responseObject.setData("hoster");
+           return responseObject;
+
+       }
+       else if(username == "host"){
+
+           allRooms.remove(Integer.parseInt(gameKey));
+           roomKeys.remove(Integer.parseInt(gameKey));
+
+           responseObject.setToken("endGame");
+           responseObject.setData("host");
+           return responseObject;
+
+       }
+
+       return null;
+
     }
 
 
