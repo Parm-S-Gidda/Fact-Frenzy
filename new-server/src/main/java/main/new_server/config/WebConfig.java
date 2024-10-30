@@ -7,6 +7,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
 @Configuration
 public class WebConfig {
 
@@ -16,12 +17,13 @@ public class WebConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // Update this to your frontend's URL
+                        .allowedOrigins("https://fact-frenzy-9c689.web.app/", "https://fact-frenzy-9c689.firebaseapp.com/") // Update this to your frontend's URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true)
                         .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
             }
         };
     }
 }
+
+

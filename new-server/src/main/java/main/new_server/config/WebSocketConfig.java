@@ -14,7 +14,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints( StompEndpointRegistry registry) {
         registry.addEndpoint("/connect")
-                .setAllowedOrigins("http://localhost:3000")
+                .setAllowedOrigins("https://fact-frenzy-9c689.web.app/", "https://fact-frenzy-9c689.firebaseapp.com/")
                 .withSockJS();
     }
 

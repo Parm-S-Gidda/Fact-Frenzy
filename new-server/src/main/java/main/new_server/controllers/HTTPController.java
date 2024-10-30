@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 public class HTTPController {
 
     int roomKey = 0;
@@ -30,6 +31,7 @@ public class HTTPController {
         roomKey++;
         allRooms.put(roomKey, (new Room(roomKey)));
         roomKeys.add(roomKey);
+        System.out.println("Creating Room");
 
         return roomKey;
     }
@@ -59,7 +61,7 @@ public class HTTPController {
         for (String question : bbb) {
             System.out.println(question);
         }
-        System.out.println("------Bottom-------");
+        System.out.println("------Bottom---lkj;lkj;kl----");
 
 
         if(!Objects.equals(username, "hoster")){
